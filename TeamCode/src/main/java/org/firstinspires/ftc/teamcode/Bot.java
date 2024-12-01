@@ -18,25 +18,25 @@ public class Bot{
     private Gyroscope imu;
 
     public Bot(DcMotor bMotor, DcMotor lMotor,DcMotor rMotor,DcMotor fMotor){
+        this.frontMotor=fMotor;
+        this.rightMotor=rMotor;
         this.backMotor=bMotor;
         this.leftMotor=lMotor;
-        this.rightMotor=rMotor;
-        this.frontMotor=fMotor;
     }
 
     //Universal Functions
     public void setSpeed(double[] motorSpeeds){
         frontMotor.setPower(motorSpeeds[0]);
-        leftMotor.setPower(motorSpeeds[1]);
-        rightMotor.setPower(motorSpeeds[2]);
-        backMotor.setPower(motorSpeeds[3]);
+        rightMotor.setPower(motorSpeeds[1]);
+        backMotor.setPower(motorSpeeds[2]);
+        leftMotor.setPower(motorSpeeds[3]);
     }
     
     public void initMotors() {
         frontMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         rightMotor.setDirection(DcMotorSimple.Direction.FORWARD);
         backMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
     
     public boolean isStopped(){

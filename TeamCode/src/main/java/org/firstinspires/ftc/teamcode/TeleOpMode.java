@@ -29,7 +29,7 @@ public class TeleOpMode extends LinearOpMode {
       //double[] speeds = {robotSpeed*(leftAnalogY-leftAnalogX-rightAnalogX),robotSpeed*(leftAnalogY-leftAnalogX+rightAnalogX),robotSpeed*(leftAnalogY+leftAnalogX+rightAnalogX),robotSpeed*(leftAnalogY+leftAnalogX-rightAnalogX)};
       //double[] speeds = {robotSpeed*(leftAnalogY-rightAnalogX),robotSpeed*(leftAnalogY+rightAnalogX),robotSpeed*(leftAnalogY+rightAnalogX),robotSpeed*(leftAnalogY-rightAnalogX)};
     
-      double[] speeds = {robotSpeed*(leftAnalogX+rightAnalogX),robotSpeed*(leftAnalogY-rightAnalogX),robotSpeed*(leftAnalogY+rightAnalogX),robotSpeed*(leftAnalogX-rightAnalogX)};
+      double[] speeds = {robotSpeed*(leftAnalogX+rightAnalogX),robotSpeed*(leftAnalogY-rightAnalogX),robotSpeed*(leftAnalogX-rightAnalogX),robotSpeed*(leftAnalogY+rightAnalogX)};
     
       deez.setSpeed(speeds);
       }
