@@ -17,7 +17,7 @@ public class Bot{
     private DcMotor frontMotor;
     private Gyroscope imu;
 
-    public Bot(DcMotor bMotor, DcMotor lMotor,DcMotor rMotor,DcMotor fMotor){
+    public Bot(DcMotor fMotor, DcMotor rMotor,DcMotor bMotor,DcMotor lMotor){
         this.frontMotor=fMotor;
         this.rightMotor=rMotor;
         this.backMotor=bMotor;
@@ -30,6 +30,10 @@ public class Bot{
         rightMotor.setPower(motorSpeeds[1]);
         backMotor.setPower(motorSpeeds[2]);
         leftMotor.setPower(motorSpeeds[3]);
+    }
+
+    public void setSlidesSpeed(double speed){
+        leftMotor.setPower(speed);
     }
     
     public void initMotors() {
