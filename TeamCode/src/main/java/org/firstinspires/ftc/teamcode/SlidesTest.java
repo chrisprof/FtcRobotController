@@ -20,7 +20,7 @@ public class SlidesTest extends LinearOpMode{
         double input;
         double leftTrigger;
 
-        double armLimit = 0.3875;
+        double armLimit = /*0.3875*/1;
 
         double swivelIncrement = 0.25;
 
