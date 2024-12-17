@@ -12,6 +12,9 @@ public class SlidesTest extends LinearOpMode{
         Servo clawServo = hardwareMap.get(Servo.class,"clawServo");
         DcMotor slidesMotor = hardwareMap.get(DcMotor.class,"backMotor");
 
+        double slidesSpeed;
+        double slidesLimit = 0.75;
+
         double speedMultiplier = 0.001;
 
         double input;
@@ -28,8 +31,9 @@ public class SlidesTest extends LinearOpMode{
         while(opModeIsActive())
         {
             leftTrigger=gamepad1.left_trigger;
-
             input = speedMultiplier*leftTrigger;
+
+            slidesSpeed= gamepad1.left_stick_y;
 
             if(gamepad1.a){
                 input+=speedMultiplier;
@@ -43,7 +47,7 @@ public class SlidesTest extends LinearOpMode{
                 armServo.setPosition(armServo.getPosition()-speedMultiplier);
             }
 
-            slidesMotor.setPower(0.4);
+            slidesMotor.setPower(slidesSpeed*slidesLimit);
             telemetry.addData("Arm Servo Position:",armServo.getPosition());
             telemetry.addData("Input:",input);
             telemetry.update();
