@@ -96,10 +96,10 @@ public class Bot {
     public DcMotor liftMotor;
     private Gyroscope imu;
 
-    public Bot(DcMotor rMotor, DcMotor lMotor, DcMotor lift_Motor) {
+    public Bot(DcMotor rMotor, DcMotor lMotor, DcMotor sMotor) {
         this.rightMotor = rMotor;
         this.leftMotor = lMotor;
-        this.liftMotor = lift_Motor;
+        this.liftMotor = sMotor;
     }
 
     //Universal Functions
@@ -108,8 +108,8 @@ public class Bot {
         leftMotor.setPower(lSpeed);
     }
 
-    public void setSlidesSpeed(double speed) {
-        leftMotor.setPower(speed);
+    public void setLiftSpeed(double speed) {
+        liftMotor.setPower(speed);
     }
 
     public void initWheels() {
@@ -121,12 +121,23 @@ public class Bot {
         return !(rightMotor.isBusy() && leftMotor.isBusy());
     }
 
-    public void initSlides() {
-        liftMotor.setMode(RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    public void initLift() {
+        resetLiftEncoder();
+        liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
-    public void resetEncoders() {
+    public void resetLiftEncoder() {
+        liftMotor.setMode(RunMode.STOP_AND_RESET_ENCODER);
+        liftMotor.setMode(RunMode.RUN_USING_ENCODER);
+    }
+
+
+    public void moveLiftTo(int position){
+        liftMotor.setTargetPosition(position);
+        liftMotor.setMode(RunMode.RUN_TO_POSITION);
+    }
+    public void resetWheelEncoders() {
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     /*
