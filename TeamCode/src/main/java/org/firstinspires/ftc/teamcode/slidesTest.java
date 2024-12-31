@@ -16,8 +16,8 @@ public class slidesTest extends LinearOpMode {
         FtcDashboard dashboard = FtcDashboard.getInstance();
         Telemetry dashboardTelemetry = dashboard.getTelemetry();
 
-        Bot deez = new Bot(hardwareMap.get(DcMotor.class, "rightMotor"),hardwareMap.get(DcMotor.class, "leftMotor"),hardwareMap.get(DcMotor.class, "liftMotor"));
-        deez.initLift();
+        Bot deez = new Bot(hardwareMap);
+        deez.init();
 
         int liftPosition;
         int floor=250;

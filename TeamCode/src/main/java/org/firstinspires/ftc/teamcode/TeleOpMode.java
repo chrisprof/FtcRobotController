@@ -4,23 +4,23 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 @TeleOp(name = "human mode")
 public class TeleOpMode extends LinearOpMode {
   public void runOpMode(){
 
-    Bot deez = new Bot(hardwareMap.get(DcMotor.class, "rightMotor"),hardwareMap.get(DcMotor.class, "leftMotor"),hardwareMap.get(DcMotor.class, "liftMotor"));
-    deez.initWheels();
-    deez.initLift();
+    FtcDashboard db = FtcDashboard.getInstance();
+    Telemetry dbtelemetry = db.getTelemetry();
 
-    //Servo Variables and Properties
-    Servo scoringArm = hardwareMap.get(Servo.class,"scoringArm");
-    Servo scoringArmClaw = hardwareMap.get(Servo.class,"scoringArmClaw");
-    Servo intakeArm = hardwareMap.get(Servo.class,"intakeArm");
-    Servo intakeArmClaw = hardwareMap.get(Servo.class,"intakeArmClaw");
+    Bot deez = new Bot(hardwareMap);
+    deez.init();
 
-    double servoIncrement = 0.005;
+    //Servo Variables
+    double servoIncrement = 0.01;
     double clawIncrement;
 
     double scoringArmInput;
@@ -33,13 +33,13 @@ public class TeleOpMode extends LinearOpMode {
     double intakeArmLimit = 0.8;
     double intakeArmClawLimit = 0.225;
 
-    double intakeArmRealFloor = intakeArm.MIN_POSITION+0.04;
-    double intakeArmFloorOffset = intakeArm.MIN_POSITION+0.1;
+    double intakeArmRealFloor = deez.intakeArm.MIN_POSITION+0.04;
+    double intakeArmFloorOffset = deez.intakeArm.MIN_POSITION+0.1;
 
-    scoringArm.setPosition(scoringArm.MIN_POSITION);
-    intakeArm.setPosition(intakeArmFloorOffset);
-    scoringArmClaw.setPosition(scoringArmClawLimit);
-    intakeArmClaw.setPosition(intakeArmClawLimit);
+    deez.scoringArm.setPosition(deez.scoringArm.MIN_POSITION);
+    deez.intakeArm.setPosition(intakeArmFloorOffset);
+    deez.scoringArmClaw.setPosition(scoringArmClawLimit);
+    deez.intakeArmClaw.setPosition(intakeArmClawLimit);
 
     //double wheelSpeed;
     double rightWheelSpeed;
@@ -88,49 +88,49 @@ public class TeleOpMode extends LinearOpMode {
         clawIncrement=0.2;
       }
 
-      boolean isScoringArmActive = gamepad1.b||scoringArm.getPosition()>0||scoringArmClaw.getPosition()==scoringArmClaw.MIN_POSITION;
+      boolean isScoringArmActive = gamepad1.b||deez.scoringArm.getPosition()>0||deez.scoringArmClaw.getPosition()==deez.scoringArmClaw.MIN_POSITION;
 
       if(isScoringArmActive){
         intakeArmClawInput=0;
         intakeArmInput=0;
 
-        intakeArm.setPosition(intakeArmRealFloor);
+        deez.intakeArm.setPosition(intakeArmRealFloor);
       }
 
-      if(scoringArm.getPosition()+scoringArmInput <= scoringArmLimit && scoringArmInput > 0){
-        scoringArm.setPosition(scoringArm.getPosition()+scoringArmInput);
+      if(deez.scoringArm.getPosition()+scoringArmInput <= scoringArmLimit && scoringArmInput > 0){
+        deez.scoringArm.setPosition(deez.scoringArm.getPosition()+scoringArmInput);
       }
 
       else{
-        scoringArm.setPosition(scoringArm.getPosition()-servoIncrement);
+        deez.scoringArm.setPosition(deez.scoringArm.getPosition()-servoIncrement);
       }
 
-      scoringArmClaw.setPosition(scoringArmClaw.getPosition()-scoringArmClawInput);
+      deez.scoringArmClaw.setPosition(deez.scoringArmClaw.getPosition()-scoringArmClawInput);
 
-      if(scoringArmClaw.getPosition()+clawIncrement<=scoringArmClawLimit && scoringArmClawInput==0){
-        scoringArmClaw.setPosition(scoringArmClaw.getPosition()+clawIncrement);
+      if(deez.scoringArmClaw.getPosition()+clawIncrement<=scoringArmClawLimit && scoringArmClawInput==0){
+        deez.scoringArmClaw.setPosition(deez.scoringArmClaw.getPosition()+clawIncrement);
       }
 
-      if(scoringArmClaw.getPosition()>scoringArmClawLimit){
-        scoringArmClaw.setPosition(scoringArmClawLimit);
+      if(deez.scoringArmClaw.getPosition()>scoringArmClawLimit){
+        deez.scoringArmClaw.setPosition(scoringArmClawLimit);
       }
 
-      if(intakeArm.getPosition()+intakeArmInput <= intakeArmLimit && intakeArmInput > 0){
-        intakeArm.setPosition(intakeArm.getPosition()+intakeArmInput);
+      if(deez.intakeArm.getPosition()+intakeArmInput <= intakeArmLimit && intakeArmInput > 0){
+        deez.intakeArm.setPosition(deez.intakeArm.getPosition()+intakeArmInput);
       }
 
-      else if(intakeArm.getPosition()-servoIncrement>=intakeArmFloorOffset){
-        intakeArm.setPosition(intakeArm.getPosition()-servoIncrement);
+      else if(deez.intakeArm.getPosition()-servoIncrement>=intakeArmFloorOffset){
+        deez.intakeArm.setPosition(deez.intakeArm.getPosition()-servoIncrement);
       }
 
-      if(intakeArm.getPosition()<intakeArmFloorOffset&&!isScoringArmActive){
-        intakeArm.setPosition(intakeArmFloorOffset);
+      if(deez.intakeArm.getPosition()<intakeArmFloorOffset&&!isScoringArmActive){
+        deez.intakeArm.setPosition(intakeArmFloorOffset);
       }
 
-      intakeArmClaw.setPosition(intakeArmClaw.getPosition()-intakeArmClawInput);
+      deez.intakeArmClaw.setPosition(deez.intakeArmClaw.getPosition()-intakeArmClawInput);
 
-      if(intakeArmClaw.getPosition()+intakeArmClawInput <= intakeArmClawLimit && intakeArmClawInput==0){
-        intakeArmClaw.setPosition(intakeArmClaw.getPosition()+servoIncrement);
+      if(deez.intakeArmClaw.getPosition()+intakeArmClawInput <= intakeArmClawLimit && intakeArmClawInput==0){
+        deez.intakeArmClaw.setPosition(deez.intakeArmClaw.getPosition()+servoIncrement);
       }
 
       //Lift Control Processing
@@ -170,13 +170,14 @@ public class TeleOpMode extends LinearOpMode {
         deez.resetLiftEncoder();
       }
 
-      telemetry.addData("Scoring Arm Servo Position:",scoringArm.getPosition());
-      telemetry.addData("Scoring Arm Claw Servo Position:",scoringArmClaw.getPosition());
-      telemetry.addData("Intake Arm Servo Position:",intakeArm.getPosition());
-      telemetry.addData("Intake Arm Claw Servo Position:",intakeArmClaw.getPosition());
-      telemetry.addData("Lift Encoder Position:",deez.liftMotor.getCurrentPosition());
-      telemetry.addData("Lift Input:", liftInput);
-      telemetry.update();
+      dbtelemetry.addData("Scoring Arm Servo Position:",deez.scoringArm.getPosition());
+      dbtelemetry.addData("Scoring Arm Claw Servo Position:",deez.scoringArmClaw.getPosition());
+      dbtelemetry.addData("Intake Arm Servo Position:",deez.intakeArm.getPosition());
+      dbtelemetry.addData("Intake Arm Claw Servo Position:",deez.intakeArmClaw.getPosition());
+      dbtelemetry.addData("Lift Encoder Position:",deez.liftMotor.getCurrentPosition());
+      dbtelemetry.addData("Lift Encoder Target Position:",deez.liftMotor.getTargetPosition());
+      dbtelemetry.addData("Lift Input:", liftInput);
+      dbtelemetry.update();
 
       if(isStopRequested()){
         deez.moveLiftTo(0);

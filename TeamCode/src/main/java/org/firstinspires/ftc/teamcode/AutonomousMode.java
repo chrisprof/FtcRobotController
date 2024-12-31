@@ -11,13 +11,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class AutonomousMode extends LinearOpMode{
   public void runOpMode(){
-    Bot craig = new Bot(hardwareMap.get(DcMotor.class, "rightMotor"),hardwareMap.get(DcMotor.class, "leftMotor"),hardwareMap.get(DcMotor.class, "liftMotor"));
-    craig.initLift();
+    Bot craig = new Bot(hardwareMap);
+    craig.init();
 
     waitForStart();
+
     while(opModeIsActive()){
       craig.moveLiftTo(1500);
-      stop();
+
+      if(isStopRequested()){
+        craig.moveLiftTo(0);
+      }
     }
   }
 }

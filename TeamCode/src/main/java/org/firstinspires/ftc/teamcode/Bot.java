@@ -87,6 +87,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gyroscope;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 public class Bot {
     private Blinker control_Hub;
@@ -94,12 +96,31 @@ public class Bot {
     public DcMotor rightMotor;
     public DcMotor leftMotor;
     public DcMotor liftMotor;
+
+    Servo scoringArm;
+    Servo scoringArmClaw;
+    Servo intakeArm;
+    Servo intakeArmClaw;
+
+    HardwareMap hwMap;
     private Gyroscope imu;
 
-    public Bot(DcMotor rMotor, DcMotor lMotor, DcMotor sMotor) {
-        this.rightMotor = rMotor;
-        this.leftMotor = lMotor;
-        this.liftMotor = sMotor;
+    public Bot(HardwareMap rhwMap) {
+        this.hwMap = rhwMap;
+    }
+
+    public void init(){
+        rightMotor = hwMap.get(DcMotor.class,"rightMotor");
+        leftMotor = hwMap.get(DcMotor.class,"leftMotor");
+        liftMotor = hwMap.get(DcMotor.class,"liftMotor");
+
+        scoringArm = hwMap.get(Servo.class,"scoringArm");
+        scoringArmClaw = hwMap.get(Servo.class,"scoringArmClaw");
+        intakeArm = hwMap.get(Servo.class,"intakeArm");
+        intakeArmClaw = hwMap.get(Servo.class,"intakeArmClaw");
+
+        initLift();
+        initWheels();
     }
 
     //Universal Functions
