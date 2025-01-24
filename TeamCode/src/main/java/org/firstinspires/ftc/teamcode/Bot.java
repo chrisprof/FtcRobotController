@@ -90,6 +90,8 @@ import com.qualcomm.robotcore.hardware.Gyroscope;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 public class Bot {
     private Blinker control_Hub;
 
@@ -103,10 +105,13 @@ public class Bot {
     Servo intakeArmClaw;
 
     HardwareMap hwMap;
+
+    //Telemetry botTelemetry;
     private Gyroscope imu;
 
-    public Bot(HardwareMap rhwMap) {
+    public Bot(HardwareMap rhwMap/*, Telemetry rbotTelemetry*/) {
         this.hwMap = rhwMap;
+        //this.botTelemetry = rbotTelemetry;
     }
 
     public void init(){
@@ -154,13 +159,16 @@ public class Bot {
     }
 
 
-    public void moveLiftTo(int position){
+    public void moveLiftTo(int position, double speed){
         liftMotor.setTargetPosition(position);
         liftMotor.setMode(RunMode.RUN_TO_POSITION);
+        setLiftSpeed(speed);
     }
     public void resetWheelEncoders() {
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
+
     /*
     public void setPosition(int[] targetPos){
 
@@ -192,6 +200,5 @@ public class Bot {
         backMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
     */
-    }
 
 }

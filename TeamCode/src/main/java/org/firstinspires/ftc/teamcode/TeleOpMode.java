@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name = "human mode")
+@TeleOp(name = "duo mode")
 public class TeleOpMode extends LinearOpMode {
   public void runOpMode(){
 
@@ -20,7 +20,7 @@ public class TeleOpMode extends LinearOpMode {
     deez.init();
 
     //Servo Variables
-    double servoIncrement = 0.01;
+    double servoIncrement = 0.005;
     double clawIncrement;
 
     double scoringArmInput;
@@ -31,7 +31,7 @@ public class TeleOpMode extends LinearOpMode {
     double scoringArmLimit = 0.8;
     double scoringArmClawLimit = 0.55;
     double intakeArmLimit = 0.8;
-    double intakeArmClawLimit = 0.225;
+    double intakeArmClawLimit = 0.22;
 
     double intakeArmRealFloor = deez.intakeArm.MIN_POSITION+0.04;
     double intakeArmFloorOffset = deez.intakeArm.MIN_POSITION+0.1;
@@ -60,8 +60,8 @@ public class TeleOpMode extends LinearOpMode {
     while(opModeIsActive()){
 
       //wheelSpeed = Math.sqrt(square(gamepad1.left_stick_y)+square(gamepad1.left_stick_x));
-      rightWheelSpeed=gamepad1.left_stick_y+gamepad1.left_stick_x;
-      leftWheelSpeed=gamepad1.left_stick_y-gamepad1.left_stick_x;
+      rightWheelSpeed=gamepad2.left_stick_y+gamepad2.left_stick_x;
+      leftWheelSpeed=gamepad2.left_stick_y-gamepad2.left_stick_x;
       deez.setWheelSpeed(rightWheelSpeed,leftWheelSpeed);
 
       //Servo Variables Init/Reset
@@ -88,7 +88,7 @@ public class TeleOpMode extends LinearOpMode {
         clawIncrement=0.2;
       }
 
-      boolean isScoringArmActive = gamepad1.b||deez.scoringArm.getPosition()>0||deez.scoringArmClaw.getPosition()==deez.scoringArmClaw.MIN_POSITION;
+      boolean isScoringArmActive = gamepad1.b||deez.scoringArm.getPosition()>0;
 
       if(isScoringArmActive){
         intakeArmClawInput=0;
@@ -178,10 +178,6 @@ public class TeleOpMode extends LinearOpMode {
       dbtelemetry.addData("Lift Encoder Target Position:",deez.liftMotor.getTargetPosition());
       dbtelemetry.addData("Lift Input:", liftInput);
       dbtelemetry.update();
-
-      if(isStopRequested()){
-        deez.moveLiftTo(0);
-      }
     }
   }
   double square(double num){
